@@ -5,3 +5,11 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = []
+
+[tool.uv.workspace]
+members = [
+    "BFF",
+    "validator_service",
+    "registtry_service",
+    "registry_service",
+]
