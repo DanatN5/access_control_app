@@ -1,0 +1,7 @@
+__pycache__
+venv/
+.env
+ruff.toml
+.json
+.ruff_cache/
+

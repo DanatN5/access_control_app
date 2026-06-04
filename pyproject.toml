@@ -10,6 +10,5 @@ dependencies = []
 members = [
     "BFF",
     "validator_service",
-    "registtry_service",
     "registry_service",
 ]
