@@ -12,3 +12,8 @@ members = [
     "validator_service",
     "registry_service",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.16",
+]
