@@ -4,6 +4,7 @@ from typing import Annotated
 from fastapi import Query, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.repositories.UnitOfWork import UnitOfWork
+from app.repositories.user_repository import UserSQLAlchemyRepo
 from app.services.user_service import UserService
 
 
@@ -21,3 +22,8 @@ async def get_user_service(
         uow: Annotated[UnitOfWork, Depends(get_uow)]
 ) -> UserService:
     return UserService(uow)
+
+async def get_user_repo(
+        session: Annotated[AsyncSession, Depends(get_session)]
+) -> UserSQLAlchemyRepo:
+    return UserSQLAlchemyRepo(session)
