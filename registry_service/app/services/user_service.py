@@ -6,8 +6,10 @@ class UserService:
 
     async def add_access(self, user_id: int, access_id: int) -> None:
         
-        access = await self.uow.accesses.get_access_by_id(access_id)
-        await self.uow.users.add_access(user_id, access)
+        access = await self.uow.accesses.get(access_id)
+        user = await self.uow.users.get(user_id)
+        user.accesses.append(access)
+        
 
     async def set_group(self, user_id: int, group_id: int) -> None:
 

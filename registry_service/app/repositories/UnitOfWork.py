@@ -15,7 +15,7 @@ class UnitOfWork(Protocol):
     async def rollback(self): pass
     
 
-class UnitOfWork:
+class SQLAlchemyUnitOfWork:
     def __init__(self, session: AsyncSession):
         self.session = session
         self.repositories = {}
