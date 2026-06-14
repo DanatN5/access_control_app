@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, String, JSON
+from sqlalchemy import String, JSON
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import TYPE_CHECKING
 from app.models.associations import group_access, group_forbidden_access, user_accesses

@@ -1,10 +1,9 @@
 from app.database import AsyncSessionLocal
 from collections.abc import AsyncGenerator, Callable
 from typing import Annotated, Type, TypeVar
-from fastapi import Query, Depends
+from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.repositories.uow import SQLAlchemyUnitOfWork, UnitOfWork
-from app.repositories.repository_protocol import SQLAlchemyRepo
 # from app.repositories.user_repository import UserSQLAlchemyRepo
 # from app.repositories.group_repository import GroupSQLAlchemyRepo
 # from app.repositories.access_repository import AccessSQLAlchemyRepo

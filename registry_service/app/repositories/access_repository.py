@@ -1,7 +1,6 @@
-from typing import Protocol, TypeVar
+from typing import Protocol
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from app.models import User, Access, Group
+from app.models import Access
 from app.repositories.repository_protocol import Repository, SQLAlchemyRepo
 
 

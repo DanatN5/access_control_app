@@ -1,7 +1,6 @@
 from app.repositories.uow import UnitOfWork
-from app.schemas.group_schemas import GroupCreate, GroupRead
+from app.schemas.group_schemas import GroupCreate
 from app.models.group import Group
-from sqlalchemy.ext.asyncio import AsyncSession
 
 class GroupService:
     def __init__(self, uow: UnitOfWork):

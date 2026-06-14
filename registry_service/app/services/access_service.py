@@ -1,7 +1,6 @@
 from app.repositories.uow import UnitOfWork
-from app.schemas.access_schemas import AccessCreate, AccessRead
+from app.schemas.access_schemas import AccessCreate
 from app.models.access import Access
-from sqlalchemy.ext.asyncio import AsyncSession
 
 class AccessService:
     def __init__(self, uow: UnitOfWork):

@@ -1,6 +1,6 @@
 import enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey, String
+from sqlalchemy import String
 from typing import TYPE_CHECKING
 from app.models.associations import group_access, group_forbidden_access
 from app.database import Base

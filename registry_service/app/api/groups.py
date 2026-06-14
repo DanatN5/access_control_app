@@ -5,9 +5,7 @@ from app.repositories.group_repository import GroupRepository
 from app.repositories.group_repository import GroupSQLAlchemyRepo
 from app.services.group_service import GroupService
 from app.dependencies import get_repo, get_service
-from app.schemas.user_schemas import UserCreate, UserRead
 from app.schemas.group_schemas import GroupRead, GroupCreate
-from app.schemas.access_schemas import AccessRead
 
 groups = APIRouter()
 
