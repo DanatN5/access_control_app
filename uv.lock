@@ -1383,12 +1383,18 @@ version = "0.1.0"
 source = { virtual = "validator_service" }
 dependencies = [
     { name = "fastapi" },
+    { name = "faststream", extra = ["rabbit"] },
+    { name = "pydantic" },
+    { name = "pydantic-settings" },
     { name = "sqlalchemy" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = ">=0.136.3" },
+    { name = "faststream", extras = ["rabbit"], specifier = ">=0.7.1" },
+    { name = "pydantic", specifier = ">=2.13.4" },
+    { name = "pydantic-settings", specifier = ">=2.14.1" },
     { name = "sqlalchemy", specifier = ">=2.0.50" },
 ]
 
