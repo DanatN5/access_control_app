@@ -24,7 +24,7 @@ class SQLAlchemyRepo(Generic[T, ID]):
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def get(self, id: ID, eager: bool = False) -> T:
+    async def get(self, id: ID, eager: bool = False) -> T | None:
         stmt = select(self.model).where(
             self.model.id == id
             )
