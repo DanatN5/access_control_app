@@ -18,7 +18,6 @@ class UnitOfWork(Protocol):
 class SQLAlchemyUnitOfWork:
     def __init__(self, session: AsyncSession):
         self.session = session
-        self.repositories = {}
 
     async def __aenter__(self):
 
@@ -40,6 +39,9 @@ class SQLAlchemyUnitOfWork:
 
     async def rollback(self):
         await self.session.rollback()
+
+    async def flush(self):
+        await self.session.flush()
     
 
 

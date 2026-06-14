@@ -1,10 +1,12 @@
 import enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey, String
+from typing import TYPE_CHECKING
 from app.models.associations import group_access, group_forbidden_access
-from app.models.access import Access
-from app.models.user import User
 from app.database import Base
+if TYPE_CHECKING:
+    from app.models.access import Access
+    from app.models.user import User
 
 
 class GroupsEnum(str, enum.Enum):

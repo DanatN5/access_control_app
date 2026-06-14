@@ -1,10 +1,11 @@
 from sqlalchemy import ForeignKey, String, JSON
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
+from app.models.associations import group_access, group_forbidden_access, user_accesses
 from app.database import Base
-from app.models.resource import Resource
-from app.models.group import Group
-from app.models.associations import group_access, group_forbidden_access
-
+if TYPE_CHECKING:
+    from app.models.group import Group
+    from app.models.user import User
 
 
 
@@ -13,12 +14,13 @@ class Access(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     access_name: Mapped[str] = mapped_column(String(20))
-    resourse_id: Mapped[int] = mapped_column(
-        ForeignKey("resource.id"),
-        unique=True,
-        )
-    resource: Mapped["Resource"] = relationship(back_populates="access")
+    resource_name: Mapped[str] = mapped_column(String(20), unique=True)
     credentials: Mapped[dict] = mapped_column(JSON)
+
+    users: Mapped[list["User"]] = relationship(
+        secondary=user_accesses,
+        back_populates="accesses"
+    )
     
     groups: Mapped[list["Group"]] = relationship(
         secondary=group_access,

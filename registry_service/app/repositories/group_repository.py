@@ -1,17 +1,21 @@
 from typing import Protocol
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models import User, Access, Group
+from app.repositories.repository_protocol import Repository, SQLAlchemyRepo
 
 
-class GroupRepository(Protocol):
-    async def get_group_by_id(self, user_id: int) -> User: pass
+class GroupRepository(Repository["Group", int],Protocol):
+    pass
 
 
+class GroupSQLAlchemyRepo(SQLAlchemyRepo):
+    model = Group
+    eager_load_options = [
+        selectinload(Group.accesses),
+        selectinload(Group.forbidden_accesses),
+        selectinload(Group.users)
+    ]
 
-class GroupSQLAlchemyRepo:
-    def __init__(self, session: AsyncSession):
-        self.session = session
-
-    async def get_group_by_id(self, group_id: int) -> Access:
-        return await self.session.get(Group, group_id)
+ 
