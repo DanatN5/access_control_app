@@ -20,8 +20,17 @@ async def process_request(
             if not request.validated:
                 repo.update
                 return
-            elif request.action == "grant":
-                service.grant(request.values)
+            
+            user_id = request.user_id
+            target_ids = request.target_ids
+
+            if request.action == "grant_access":
+                service.grant_access(user_id, target_ids)
+            elif request.action == "revoke_access":
+                service.revoke_access(user_id, target_ids)
+            elif request.action == "reset_group":
+                service.reset_group(user_id, target_ids)
             else:
-                service.revoke(request.values)
+                service.unset_group(user_id, target_ids)
+
             repo.update

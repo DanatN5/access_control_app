@@ -46,20 +46,34 @@ class UserService:
         return user_accesses
 
 
+    async def grant_access(self, user_id: int, access_ids: list[int]) -> None:
 
-    async def add_access(self, user_id: int, access_id: int) -> None:
+        accesses = await self.uow.accesses.get(access_ids)
+        if len(access_ids) > 1:
+            accesses = await self.uow.accesses.get_many(access_ids)
         
-        access = await self.uow.accesses.get(access_id)
-        user = await self.uow.users.get(user_id)
-        user.accesses.append(access)
+        user = await self.uow.users.get(user_id, eager=True)
+        user.accesses.append(accesses)
+
+    async def revoke_access(self, user_id: int, access_ids: list[int]) -> None:
+        accesses = await self.uow.accesses.get(access_ids)
+        if len(access_ids) > 1:
+            accesses = await self.uow.accesses.get_many(access_ids)
+        user = await self.uow.users.get(user_id, eager=True)
+        user.accesses.remove(accesses)
+
         
+    async def reset_group(self, user_id: int, group_id: int) -> None:
 
-    async def set_group(self, user_id: int, group_id: int) -> None:
+        group = await self.uow.groups.get(group_id, eager=True)
+        user = await self.uow.users.get(user_id, eager=True)
+        
+        user.group = group
 
-        group = await self.uow.groups.get_group_by_id(group_id)
-        old_group = await self.uow.users.get_group(user_id)
-        if old_group:
-            self.uow.users.unset_group
-        await self.uow.users.set_group(group)
+    async def unset_group(self, user_id: int, group_id: int) -> None:
 
+        group = await self.uow.groups.get(group_id, eager=True)
+        user = await self.uow.users.get(user_id, eager=True)
+        
+        user.group.remove(group)
     
