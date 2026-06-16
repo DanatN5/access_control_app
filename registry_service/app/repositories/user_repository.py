@@ -10,6 +10,7 @@ class UserRepository(Repository["User", int], Protocol):
 
 class UserSQLAlchemyRepo(SQLAlchemyRepo):
     model = User
+    name = "User"
     eager_load_options = [
         selectinload(User.accesses),
         selectinload(User.group)

@@ -12,6 +12,8 @@ class RequestStatus(str, Enum):
 
 
 class Request(Base):
+    __tablename__ = "requests"
+    
     id: Mapped[int] = mapped_column(primary_key=True)
     status: Mapped[RequestStatus]
     created_at: Mapped[datetime] = mapped_column(DateTime)

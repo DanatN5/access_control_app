@@ -10,6 +10,7 @@ class GroupRepository(Repository["Group", int],Protocol):
 
 class GroupSQLAlchemyRepo(SQLAlchemyRepo):
     model = Group
+    name = "Group"
     eager_load_options = [
         selectinload(Group.accesses),
         selectinload(Group.forbidden_accesses),

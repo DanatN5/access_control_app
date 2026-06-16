@@ -9,3 +9,4 @@ class RequestRepository(Repository["Request", int], Protocol):
 
 class RequestSQLAlchemyRepo(SQLAlchemyRepo):
     model = Request
+    name = "Request"

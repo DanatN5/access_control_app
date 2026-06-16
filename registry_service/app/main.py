@@ -1,23 +1,32 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
 from collections.abc import AsyncGenerator
 from app.api.users import users
 from app.api.groups import groups
 from app.api.accesses import accesses
-from app.broker.faststream_broker import broker
+from app.exceptions.exceptions import NotFoundError
+# from app.broker.faststream_broker import broker
 
 app = FastAPI()
 app.include_router(router=users, prefix="/v1")
 app.include_router(router=accesses, prefix="/v1")
 app.include_router(router=groups, prefix="/v1")
 
-@asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
-    await broker.start()
+@app.exception_handler(NotFoundError)
+async def not_found_handler(request: Request, exc: NotFoundError):
+    return JSONResponse(
+        status_code=404,
+        content={"detail": str(exc)}
+    )
 
-    yield
+# @asynccontextmanager
+# async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
+#     # await broker.start()
 
-    await broker.stop()
+#     yield
+
+#     # await broker.stop()
 
 
 

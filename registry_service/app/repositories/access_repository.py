@@ -11,6 +11,7 @@ class AccessRepository(Repository["Access", int], Protocol):
 
 class AccessSQLAlchemyRepo(SQLAlchemyRepo):
     model = Access
+    name = "Access"
     
     async def get_many(self, ids: list[int]) -> list[Access]:
         result = await self.session.scalars(
