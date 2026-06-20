@@ -12,7 +12,8 @@ class RequestMessage(BaseModel):
     user_id: int
     validated: bool
     action: Action
-    target_ids: list[int]
+    accesses_ids: list[int] | None
+    group_id: int | None
 
 
 

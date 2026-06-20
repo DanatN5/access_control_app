@@ -11,12 +11,14 @@ class Request(BaseModel):
     request_id: int
     user_id: int
     action: Action
-    target_ids: list[int]
+    accesses_ids: list[int] | None
+    group_id: int | None
 
 class RequestValidatedEvent(BaseModel):
     request_id: int
-    success: bool
+    validated: bool
     errors: list[str] = []
     user_id: int
     action: Action
-    target_ids: list[int]
+    accesses_ids: list[int] | None
+    group_id: int | None
