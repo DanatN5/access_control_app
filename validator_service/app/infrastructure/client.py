@@ -6,6 +6,8 @@ from app.exceptions import NotFoundError
 class HttpClient(Protocol):
     async def get(self, url: str) -> dict: ...
 
+    async def send(self, url: str, payload: dict) -> None: ...
+
 class HttpxClient:
 
     def __init__(self, client: httpx.AsyncClient):
@@ -20,3 +22,7 @@ class HttpxClient:
         response.raise_for_status()
 
         return response.json()
+    
+    
+    async def send(self, url: str, payload: dict) -> None:
+        await self.client.post(self, url, json=payload)

@@ -1,7 +1,9 @@
+import httpx
 from faststream.rabbit import RabbitBroker
 from app.messaging.schemas import Request
 from app.application.service import ValidationService
-from app.infrastructure.clients import RegistryCLient
+from validator_service.app.infrastructure.managers import RegistryCLient
+from app.application.request_handler import RequestHandler
 
 
 broker = RabbitBroker("amqp://guest:guest@localhost:5672/")
@@ -12,18 +14,11 @@ client_url = ""
 async def proccess_request(
     request: Request
 ) -> None:
-    service = ValidationService(RegistryCLient(client_url))
+    async with httpx.AsyncClient() as client:
+        validator = ValidationService(client)
+        handler = RequestHandler(client, validator)
+        
+        await handler.handle(request)
 
-    user_id = request.user_id
-    target_ids = request.target_ids
-
-    if request.action == "grant_access":
-        service.grant_access(user_id, target_ids)
-    elif request.action == "revoke_access":
-        service.revoke_access(user_id, target_ids)
-    elif request.action == "reset_group":
-        service.reset_group(user_id, target_ids[0])
-    else:
-        service.unset_group(user_id, target_ids[0])
 
 
