@@ -17,7 +17,7 @@ class RequestSQLAlchemyRepo(SQLAlchemyRepo):
             errors: list[str] | None = None
         ):
         
-        request = self.session.get(self.model, id)
+        request = await self.session.get(self.model, id)
         if request:
             request.status = status
             if errors:

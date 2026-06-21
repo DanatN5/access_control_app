@@ -2,6 +2,7 @@ from typing import Protocol
 from sqlalchemy import select
 from app.models import Access
 from app.repositories.repository_protocol import Repository, SQLAlchemyRepo
+from app.exceptions.exceptions import NotFoundError
 
 
 class AccessRepository(Repository["Access", int], Protocol):
@@ -14,9 +15,9 @@ class AccessSQLAlchemyRepo(SQLAlchemyRepo):
     name = "Access"
     
     async def get_many(self, ids: list[int]) -> list[Access]:
-        result = await self.session.scalars(
+        accesses = await self.session.scalars(
             select(self.model)
             .where(self.model.id.in_(ids))
         )
         
-        return list(result)
+        return list(accesses)

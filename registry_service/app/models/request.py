@@ -1,14 +1,14 @@
 from app.database import Base
-from sqlalchemy import DateTime, func, JSON
+from sqlalchemy import DateTime, func, JSON, text
 from sqlalchemy.orm import Mapped, mapped_column
 from enum import Enum
 from datetime import datetime
 
 
 class RequestStatus(str, Enum):
-    pending = "PENDING"
-    accepted = "ACCEPTED"
-    denied = "DENIED"
+    PENDING = "pending"
+    DENIED = "denied"
+    ACCEPTED = "accepted"
 
 class Action(str, Enum):
     GRANT_ACCESS = "grant access"
@@ -21,17 +21,21 @@ class Request(Base):
     __tablename__ = "requests"
     
     id: Mapped[int] = mapped_column(primary_key=True)
-    status: Mapped[RequestStatus]
+    status: Mapped[RequestStatus] = mapped_column(
+        default=RequestStatus.PENDING,
+        server_default=text("'PENDING'"))
     user_id: Mapped[int]
     action: Mapped[Action]
     accesses_ids: Mapped[list[int] | None] = mapped_column(JSON, nullable=True)
     group_id: Mapped[int | None] = mapped_column(nullable=True)
     errors: Mapped[list[int] | None] = mapped_column(JSON, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
-        DateTime, default=func.now()
+        DateTime, default=func.now(),
+        server_default=func.now()
         )
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime, default=func.now(), onupdate=func.now()
+        DateTime, default=func.now(), 
+        server_default=func.now(), onupdate=func.now()
         )
 
     def to_dict(self) -> dict:

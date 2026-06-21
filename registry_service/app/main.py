@@ -5,13 +5,15 @@ from collections.abc import AsyncGenerator
 from app.api.users import users
 from app.api.groups import groups
 from app.api.accesses import accesses
+from app.api.requests import requests
 from app.exceptions.exceptions import NotFoundError
-# from app.broker.faststream_broker import broker
+
 
 app = FastAPI()
 app.include_router(router=users, prefix="/v1")
 app.include_router(router=accesses, prefix="/v1")
 app.include_router(router=groups, prefix="/v1")
+app.include_router(router=requests, prefix="/v1")
 
 @app.exception_handler(NotFoundError)
 async def not_found_handler(request: Request, exc: NotFoundError):
@@ -19,15 +21,6 @@ async def not_found_handler(request: Request, exc: NotFoundError):
         status_code=404,
         content={"detail": str(exc)}
     )
-
-# @asynccontextmanager
-# async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
-#     # await broker.start()
-
-#     yield
-
-#     # await broker.stop()
-
 
 
 @app.get("/health")
