@@ -1,4 +1,37 @@
+version: "3.9"
+
 services:
+  registry-service:
+    build: ./registry_service
+    container_name: registry_service
+    
+    env_file:
+      - ./registry_service/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    command: >
+      sh -c "
+      alembic upgrade head && 
+      uvicorn app.main:app --host 0.0.0.0 --port 8000
+      "
+
+  
+  db:
+    image: postgres:15
+    container_name: trading_results_db
+    env_file:
+      - .env
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+
   rabbitmq:
     image: rabbitmq:3-management-alpine
     hostname: rabbitmq
@@ -11,3 +44,7 @@ services:
       RABBITMQ_DEFAULT_PASS: "guest"
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq
+
+
+volumes:
+  postgres_data:

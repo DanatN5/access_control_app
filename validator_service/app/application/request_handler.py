@@ -96,7 +96,7 @@ class RequestHandler:
 
 
     async def send_result(self, msg: RequestValidatedEvent):
-        await self.client.send(self.send_url)
+        await self.client.send(f"{self.send_url}/{msg.request_id}")
         
 
 

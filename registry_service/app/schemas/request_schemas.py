@@ -16,7 +16,6 @@ class RequestReadShort(BaseModel):
 
 
 class RequestCreate(BaseModel):
-    status: RequestStatus
     user_id: int
     action: Action
     accesses_ids: list[int] | None

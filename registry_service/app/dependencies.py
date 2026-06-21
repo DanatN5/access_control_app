@@ -4,11 +4,6 @@ from typing import Annotated, Type, TypeVar
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.repositories.uow import SQLAlchemyUnitOfWork, UnitOfWork
-# from app.repositories.user_repository import UserSQLAlchemyRepo
-# from app.repositories.group_repository import GroupSQLAlchemyRepo
-# from app.repositories.access_repository import AccessSQLAlchemyRepo
-# from app.services.user_service import UserService
-# from app.services.group_service import GroupService
 
 
 S = TypeVar("S")
