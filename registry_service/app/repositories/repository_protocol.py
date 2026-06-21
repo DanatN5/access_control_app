@@ -44,10 +44,7 @@ class SQLAlchemyRepo(Generic[T, ID]):
     async def create(self, entity: T) -> T:
         self.session.add(entity)
         return entity
-    
-    async def delete(self, id: T) -> None:
-        entity = await self.get(id)
-        await self.session.delete(entity)
+
 
     async def list(self, eager: bool = False) -> list[T]:
         stmt = select(self.model)

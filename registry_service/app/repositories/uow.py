@@ -2,6 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.repositories.access_repository import AccessSQLAlchemyRepo
 from app.repositories.group_repository import GroupSQLAlchemyRepo
 from app.repositories.user_repository import UserSQLAlchemyRepo
+from app.repositories.request_repository import RequestSQLAlchemyRepo
 from typing import Protocol
 
 
@@ -24,6 +25,7 @@ class SQLAlchemyUnitOfWork:
         self.users = UserSQLAlchemyRepo(self.session)
         self.accesses = AccessSQLAlchemyRepo(self.session)
         self.groups = GroupSQLAlchemyRepo(self.session)
+        self.requests = RequestSQLAlchemyRepo(self.session)
 
         return self
     
