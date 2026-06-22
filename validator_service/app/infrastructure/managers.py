@@ -1,5 +1,6 @@
 from app.infrastructure.client import HttpxClient
 from app.exceptions import NotFoundError
+from app.messaging.schemas import GroupInfo, AccessInfo, AccessNameInfo
 
 class RegistryManager:
     
@@ -13,7 +14,7 @@ class RegistryManager:
     async def exists(self, id: int) -> bool:
         try:
             response = await self.client.get(
-                f"{self.url}/{self.resource}/{id}"
+                f"{self.url}/v1/{self.resource}/{id}"
             )
 
             return True
@@ -31,9 +32,15 @@ class UserManager(RegistryManager):
             response = await self.client.get(
                 f"{self.url}/{self.resource}/{user_id}/{info}"
             )
-            return response
+            print(response.status_code)
+            print(response.text)
+            if info == "group":
+                return GroupInfo.model_validate(response.json())
+            if info == "accesses":
+                return [AccessInfo.model_validate(access) for access in response.json()]
+
         except Exception:
-            pass
+            print(Exception)
 
 
 class AccessManager(RegistryManager):
@@ -46,7 +53,9 @@ class AccessManager(RegistryManager):
             response = await self.client.get(
                 f"{self.url}/{self.resource}"
             )
-            existing_accesses = [access["id"] for access in response]
+            existing_accesses = [
+                AccessInfo.model_validate(access).id for access in response.json()
+                ]
             
             for id in ids:
                 if id not in existing_accesses:

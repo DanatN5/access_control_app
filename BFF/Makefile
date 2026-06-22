@@ -1,5 +1,5 @@
 runserver:
-	uvicorn app.main:app --host localhost --port 8000 --reload
+	uvicorn app.main:app --host localhost --port 8003 --reload
 
 lint:
 	uv run ruff check

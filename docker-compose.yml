@@ -9,11 +9,12 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      - postgres
     volumes:
       - ./registry_service:/app
     command: >
       sh -c "
+      sleep 15 &&
       alembic upgrade head && 
       uvicorn app.main:app --host 0.0.0.0 --port 8000
       "
@@ -29,7 +30,11 @@ services:
       - rabbitmq
     volumes:
       - ./BFF:/app
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    command: >
+      sh -c "
+      sleep 15 &&
+      uvicorn app.main:app --host 0.0.0.0 --port 8000
+      "
 
 
   validator-service:
@@ -43,14 +48,17 @@ services:
       - rabbitmq
     volumes:
       - ./validator_service:/app
-    command: faststream run app.main:app --host 0.0.0.0 --port 8000
+    command: >
+      sh -c "
+      sleep 15 &&
+      faststream run app.main:app --host 0.0.0.0 --port 8000
+      "
 
   
-  db:
+  postgres:
     image: postgres:15
-    container_name: access_control_service_db
     env_file:
-      - ./registry_service/.env
+      - .env.postgres
     ports:
       - "5433:5432"
     volumes:

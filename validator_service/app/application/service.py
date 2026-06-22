@@ -1,12 +1,12 @@
 from app.infrastructure.client import HttpClient
 from app.infrastructure.managers import (
-    RegistryManager,
     UserManager,
     AccessManager,
     GroupManager,
 )
-from app.messaging.schemas import Request, RequestValidatedEvent
+from app.config import settings
 
+REQUEST_URL = f"{settings.request_url}/v1"
 
 class ValidationService:
 
@@ -15,9 +15,9 @@ class ValidationService:
 
     def __init__(self, client: HttpClient):
         self.client = client
-        self.user_mgr = UserManager(self.client)
-        self.access_mgr = AccessManager(self.client)
-        self.group_mgr = GroupManager(self.client)
+        self.user_mgr = UserManager(self.client, REQUEST_URL)
+        self.access_mgr = AccessManager(self.client, REQUEST_URL)
+        self.group_mgr = GroupManager(self.client, REQUEST_URL)
         
     
     async def user_exists(self, id: int) -> bool:

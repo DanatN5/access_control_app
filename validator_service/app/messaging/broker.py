@@ -2,15 +2,17 @@ import httpx
 from faststream.rabbit import RabbitBroker
 from app.messaging.schemas import Request
 from app.application.service import ValidationService
-from validator_service.app.infrastructure.managers import RegistryCLient
 from app.application.request_handler import RequestHandler
+from app.config import settings
 
 
-broker = RabbitBroker("amqp://guest:guest@localhost:5672/")
+broker = RabbitBroker(str(settings.broker.url),reconnect_interval=5.0)
+
+local = "amqp://guest:guest@rabbitmq:5672/"
 
 client_url = ""
 
-@broker.subscriber("requests")
+@broker.subscriber(str(settings.broker.queue))
 async def proccess_request(
     request: Request
 ) -> None:

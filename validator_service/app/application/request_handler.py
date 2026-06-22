@@ -1,9 +1,8 @@
 from app.infrastructure.client import HttpClient
 from app.messaging.schemas import Request, RequestValidatedEvent
 from app.application.service import ValidationService
-from app.infrastructure.managers import UserManager
+from app.config import settings
 
-send_url = "http://registry_service:8000/requests"
 
 class RequestHandler:
 
@@ -26,7 +25,6 @@ class RequestHandler:
 
     def get_validation_result(self, request: Request) -> RequestValidatedEvent:
         return {
-            "request_id": request.request_id,
             "validated": self.validated,
             "errors": self.errors,
             "user_id": request.user_id,
@@ -98,7 +96,7 @@ class RequestHandler:
 
 
     async def send_result(self, msg: RequestValidatedEvent):
-        await self.client.send(f"{send_url}/{msg.request_id}")
+        await self.client.send(f"{settings.request_url}/v1/requests", msg)
         
 
 

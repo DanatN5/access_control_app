@@ -1,5 +1,5 @@
 from app.repositories.uow import UnitOfWork
-from app.schemas.request_schemas import ValidatedRequest, RequestCreate, RequestStatus
+from app.schemas.request_schemas import ValidatedRequest, RequestStatus
 from app.models import Request
 
 class RequestService:
@@ -18,7 +18,7 @@ class RequestService:
         if request.validated:
             await self.cases[request.action](request)
         
-        await self.update_request(request)
+        await self._create(request)
 
 
     async def grant_access(self, request: ValidatedRequest) -> None:
@@ -50,27 +50,21 @@ class RequestService:
         
         user.group.remove(group)
 
-    
-    async def update_request(self, request: ValidatedRequest) -> None:
+
+    async def _create(self, request: ValidatedRequest) -> Request:
+
         if request.validated:
-            await self.uow.requests.update_request(
-                request.id,
-                RequestStatus.ACCEPTED
-                )
-
+            status = RequestStatus.ACCEPTED
+        
         if not request.validated:
-            await self.uow.requests.update_request(
-                request.id,
-                RequestStatus.DENIED,
-                request.errors
-                )
+            status = RequestStatus.DENIED
 
-    async def _create(self, request: RequestCreate) -> Request:
         request = Request(
             user_id=request.user_id,
             group_id=request.group_id,
             action=request.action,
-            accesses_ids=request.accesses_ids            
+            accesses_ids=request.accesses_ids,
+            status=status
         )
         await self.uow.requests.create(request)
         await self.uow.flush()

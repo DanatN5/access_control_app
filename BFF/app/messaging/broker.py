@@ -11,7 +11,7 @@ class FaststreamBroker:
         self.broker = broker
 
     async def publish(self, msg: str, queue: str) -> None:
-        await self.broker.publish(msg, queue)
+        await self.broker.publish(msg.model_dump(mode="json"), queue)
 
 
 

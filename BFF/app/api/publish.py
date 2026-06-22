@@ -7,13 +7,13 @@ from app.messaging.broker import Broker
 from app.services.publish_service import PublishService
 
 
-publish = APIRouter()
+requests = APIRouter()
 
 ClientDependency = Annotated[HttpClient, Depends(get_client)]
 BrokerDependency = Annotated[Broker, Depends(get_broker)]
 ServiceDependency = Annotated[PublishService, Depends(get_publish_service)]
 
-@publish.post("/publish")
+@requests.post("/publish")
 async def publish_request(
     request: RequestCreate,
     service: ServiceDependency,

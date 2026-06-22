@@ -7,9 +7,6 @@ from fastapi import Depends
 
 import httpx
 
-ClientDependency = Annotated[HttpClient, Depends(get_client)]
-BrokerDependency = Annotated[Broker, Depends(get_broker)]
-
 async def get_client() -> AsyncGenerator[HttpClient, None]:
     async with httpx.AsyncClient() as client:
         yield HttpxClient(client)
@@ -19,9 +16,10 @@ async def get_client() -> AsyncGenerator[HttpClient, None]:
 async def get_broker() -> Broker:
     return FaststreamBroker(broker)
 
+ClientDependency = Annotated[HttpClient, Depends(get_client)]
+BrokerDependency = Annotated[Broker, Depends(get_broker)]
 
 async def get_publish_service(
-        client: ClientDependency,
         broker: BrokerDependency
 ) -> PublishService:
-    return PublishService(client, broker)
+    return PublishService(broker)

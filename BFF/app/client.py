@@ -25,4 +25,4 @@ class HttpxClient:
     
     
     async def send(self, url: str, payload: dict) -> None:
-        await self.client.post(url, json=payload)
+        await self.client.post(url, json=payload.model_dump(mode="json"))

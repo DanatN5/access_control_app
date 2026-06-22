@@ -15,14 +15,8 @@ class RequestReadShort(BaseModel):
     status: RequestStatus
 
 
-class RequestCreate(BaseModel):
-    user_id: int
-    action: Action
-    accesses_ids: list[int] | None
-    group_id: int | None
-
 class ValidatedRequest(BaseModel):
-    id: int
+  
     validated: bool
     errors: list[str] = []
     user_id: int
