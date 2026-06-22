@@ -46,34 +46,34 @@ class UserService:
         return user_accesses
 
 
-    async def grant_access(self, user_id: int, access_ids: list[int]) -> None:
+    # async def grant_access(self, user_id: int, access_ids: list[int]) -> None:
 
-        accesses = await self.uow.accesses.get(access_ids)
-        if len(access_ids) > 1:
-            accesses = await self.uow.accesses.get_many(access_ids)
+    #     accesses = await self.uow.accesses.get(access_ids)
+    #     if len(access_ids) > 1:
+    #         accesses = await self.uow.accesses.get_many(access_ids)
         
-        user = await self.uow.users.get(user_id, eager=True)
-        user.accesses.append(accesses)
+    #     user = await self.uow.users.get(user_id, eager=True)
+    #     user.accesses.append(accesses)
 
-    async def revoke_access(self, user_id: int, access_ids: list[int]) -> None:
-        accesses = await self.uow.accesses.get(access_ids)
-        if len(access_ids) > 1:
-            accesses = await self.uow.accesses.get_many(access_ids)
-        user = await self.uow.users.get(user_id, eager=True)
-        user.accesses.remove(accesses)
+    # async def revoke_access(self, user_id: int, access_ids: list[int]) -> None:
+    #     accesses = await self.uow.accesses.get(access_ids)
+    #     if len(access_ids) > 1:
+    #         accesses = await self.uow.accesses.get_many(access_ids)
+    #     user = await self.uow.users.get(user_id, eager=True)
+    #     user.accesses.remove(accesses)
 
         
-    async def reset_group(self, user_id: int, group_id: int) -> None:
+    # async def reset_group(self, user_id: int, group_id: int) -> None:
 
-        group = await self.uow.groups.get(group_id, eager=True)
-        user = await self.uow.users.get(user_id, eager=True)
+    #     group = await self.uow.groups.get(group_id, eager=True)
+    #     user = await self.uow.users.get(user_id, eager=True)
         
-        user.group = group
+    #     user.group = group
 
-    async def unset_group(self, user_id: int, group_id: int) -> None:
+    # async def unset_group(self, user_id: int, group_id: int) -> None:
 
-        group = await self.uow.groups.get(group_id, eager=True)
-        user = await self.uow.users.get(user_id, eager=True)
+    #     group = await self.uow.groups.get(group_id, eager=True)
+    #     user = await self.uow.users.get(user_id, eager=True)
         
-        user.group.remove(group)
+    #     user.group.remove(group)
     

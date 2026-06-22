@@ -29,8 +29,8 @@ async def process_request(
             elif request.action == "revoke_access":
                 service.revoke_access(user_id, target_ids)
             elif request.action == "reset_group":
-                service.reset_group(user_id, target_ids)
+                service.reset_group(user_id, target_ids[0])
             else:
-                service.unset_group(user_id, target_ids)
+                service.unset_group(user_id, target_ids[0])
 
             repo.update
