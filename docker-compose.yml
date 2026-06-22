@@ -2,9 +2,8 @@ version: "3.9"
 
 services:
   registry-service:
-    build: ./registry_service
-    container_name: registry_service
-    
+    build: 
+      context: ./registry_service
     env_file:
       - ./registry_service/.env
     ports:
@@ -12,24 +11,50 @@ services:
     depends_on:
       - db
     volumes:
-      - .:/app
+      - ./registry_service:/app
     command: >
       sh -c "
       alembic upgrade head && 
       uvicorn app.main:app --host 0.0.0.0 --port 8000
       "
 
+  BFF-service:
+    build:  
+      context: ./BFF    
+    env_file:
+      - ./BFF/.env
+    ports:
+      - "8001:8000"
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./BFF:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+
+  validator-service:
+    build:  
+      context: ./validator_service
+    env_file:
+      - ./validator_service/.env
+    ports:
+      - "8002:8000"
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./validator_service:/app
+    command: faststream run app.main:app --host 0.0.0.0 --port 8000
+
   
   db:
     image: postgres:15
-    container_name: trading_results_db
+    container_name: access_control_service_db
     env_file:
-      - .env
+      - ./registry_service/.env
     ports:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
 
 
   rabbitmq:
@@ -48,3 +73,4 @@ services:
 
 volumes:
   postgres_data:
+  rabbitmq-data:

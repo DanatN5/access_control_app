@@ -3,6 +3,8 @@ from app.messaging.schemas import Request, RequestValidatedEvent
 from app.application.service import ValidationService
 from app.infrastructure.managers import UserManager
 
+send_url = "http://registry_service:8000/requests"
+
 class RequestHandler:
 
     validated: bool = None
@@ -96,7 +98,7 @@ class RequestHandler:
 
 
     async def send_result(self, msg: RequestValidatedEvent):
-        await self.client.send(f"{self.send_url}/{msg.request_id}")
+        await self.client.send(f"{send_url}/{msg.request_id}")
         
 
 
