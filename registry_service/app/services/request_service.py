@@ -41,6 +41,7 @@ class RequestService:
         user = await self.uow.users.get(request.user_id, eager=True)
         
         user.group = group
+        user.accesses = group.accesses
 
 
     async def unset_group(self, request: ValidatedRequest) -> None:
@@ -48,7 +49,10 @@ class RequestService:
         group = await self.uow.groups.get(request.group_id, eager=True)
         user = await self.uow.users.get(request.user_id, eager=True)
         
-        user.group.remove(group)
+        user.group = None
+        group_acceses = group.accesses
+        for access in group_acceses:
+            user.accesses.remove(access)
 
 
     async def _create(self, request: ValidatedRequest) -> Request:
@@ -64,8 +68,10 @@ class RequestService:
             group_id=request.group_id,
             action=request.action,
             accesses_ids=request.accesses_ids,
-            status=status
+            status=status,
+            errors=request.errors            
         )
+
         await self.uow.requests.create(request)
         await self.uow.flush()
 

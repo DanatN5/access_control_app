@@ -44,7 +44,7 @@ class SQLAlchemyRepo(Generic[T, ID]):
     async def create(self, entity: T) -> T:
         self.session.add(entity)
         return entity
-
+    
 
     async def list(self, eager: bool = False) -> list[T]:
         stmt = select(self.model)

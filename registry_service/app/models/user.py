@@ -15,5 +15,5 @@ class User(Base):
         secondary=user_accesses,
         back_populates="users"
     )
-    group_id: Mapped[int] = mapped_column(ForeignKey("groups.id"))
-    group: Mapped["Group"] = relationship(back_populates="users")
+    group_id: Mapped[int | None] = mapped_column(ForeignKey("groups.id"), nullable=True)
+    group: Mapped["Group | None"] = relationship(back_populates="users")

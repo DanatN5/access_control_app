@@ -5,6 +5,7 @@ from app.models.request import Action, RequestStatus
 class RequestRead(BaseModel):
     id: int
     status: RequestStatus
+    errors: str | None
     user_id: int
     action: Action
     accesses_ids: list[int] | None
@@ -13,12 +14,13 @@ class RequestRead(BaseModel):
 class RequestReadShort(BaseModel):
     id: int
     status: RequestStatus
+    errors: str | None
 
 
 class ValidatedRequest(BaseModel):
   
     validated: bool
-    errors: list[str] = []
+    errors: str | None
     user_id: int
     action: Action
     accesses_ids: list[int] | None

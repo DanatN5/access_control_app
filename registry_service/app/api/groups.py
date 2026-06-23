@@ -24,3 +24,10 @@ async def get_groups_list(
     group_repo: GroupRepoDependency
 ) -> list[GroupRead]:
     return await group_repo.list(eager=True)
+
+@groups.get("/groups/{group_id}")
+async def get_user_by_id(
+    group_repo: GroupRepoDependency,
+    group_id: int
+) -> GroupRead:
+    return await group_repo.get(group_id, eager=True)

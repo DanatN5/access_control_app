@@ -7,13 +7,13 @@ from app.schemas.group_schemas import GroupName
 
 class UserCreate(BaseModel):
     name: str = Field(max_length=15)
-    group_id: int
+    group_id: int | None
     accesses_id: Optional[list[int]]
 
 class UserRead(BaseModel):
     id: int
     name: str
-    group: GroupName
+    group: GroupName | None
     accesses: list[AccessName]
 
     model_config = ConfigDict(from_attributes=True)
