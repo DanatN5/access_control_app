@@ -16,6 +16,7 @@ class HttpxClient:
     async def get(self, url: str) -> dict:
 
         response = await self.client.get(url)
+
         if response.status_code == 404:
             raise NotFoundError()
 

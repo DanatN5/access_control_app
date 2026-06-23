@@ -1,15 +1,14 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from contextlib import asynccontextmanager
-from collections.abc import AsyncGenerator
 from app.exceptions import NotFoundError
 from app.messaging.fs_broker import broker
-from app.api.publish import requests
-# from app.api.users import users
-# from app.api.groups import groups
-# from app.api.accesses import accesses
-# from app.api.requests import requests
-# from app.exceptions.exceptions import NotFoundError
+from app.api.publish import publish
+from app.api.users import users
+from app.api.groups import groups
+from app.api.accesses import accesses
+from app.api.requests import requests
+from app.exceptions import NotFoundError
 
 
 @asynccontextmanager
@@ -21,10 +20,10 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(router=requests, prefix="/v1")
-# app.include_router(router=users, prefix="/v1")
-# app.include_router(router=accesses, prefix="/v1")
-# app.include_router(router=groups, prefix="/v1")
-# app.include_router(router=requests, prefix="/v1")
+app.include_router(router=users, prefix="/v1")
+app.include_router(router=accesses, prefix="/v1")
+app.include_router(router=groups, prefix="/v1")
+app.include_router(router=publish, prefix="/v1")
 
 @app.exception_handler(NotFoundError)
 async def not_found_handler(request: Request, exc: NotFoundError):

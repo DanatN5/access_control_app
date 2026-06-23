@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict
 from app.schemas.access_schemas import AccessName
 
 class GroupRequestBase(BaseModel):
@@ -6,12 +6,6 @@ class GroupRequestBase(BaseModel):
     user_id: int
     action: str
     group_id: int
-
-
-class GroupCreate(BaseModel):
-    group_name: str = Field(max_length=15)
-    access_ids: list[int]
-    forbidden_access_ids: list[int]
 
 class GroupRead(BaseModel):
     id: int

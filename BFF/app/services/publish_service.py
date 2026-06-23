@@ -1,6 +1,6 @@
 from app.client import HttpxClient
 from app.messaging.broker import FaststreamBroker
-from app.schemas import RequestCreate
+from app.schemas.request_schemas import RequestCreate
 from app.config import settings
 
 class PublishService:

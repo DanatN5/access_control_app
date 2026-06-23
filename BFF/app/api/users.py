@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import Depends, APIRouter
 
 from app.dependencies import get_client
-from app.schemas.user_schemas import UserCreate, UserRead
+from app.schemas.user_schemas import UserRead
 from app.schemas.group_schemas import GroupRead
 from app.schemas.access_schemas import AccessRead
 from app.client import HttpClient
@@ -35,11 +35,3 @@ async def get_user_group(user_id: int, client: ClientDependency) -> GroupRead:
 async def get_user_accesses(user_id: int, client: ClientDependency) -> list[AccessRead]:
     url = f"{URL}/{user_id}/accesses"
     return await client.get(url) 
-
-@users.post("/users")
-async def create_user(
-    user: UserCreate,
-    client: ClientDependency
-) -> UserRead:
-    url = f"{URL}/users"
-    return await client.send(url, user)

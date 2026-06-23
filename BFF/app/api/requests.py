@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import Depends, APIRouter
 
 from app.dependencies import get_client
-from app.schemas.request_schemas import RequestCreate, RequestRead, RequestReadShort
+from app.schemas.request_schemas import RequestRead, RequestReadShort
 from app.client import HttpClient
 from app.config import settings
 

@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import Depends, APIRouter
 
 from app.dependencies import get_client
-from app.schemas.group_schemas import GroupRead, GroupCreate
+from app.schemas.group_schemas import GroupRead
 from app.client import HttpClient
 from app.config import settings
 
@@ -13,13 +13,6 @@ ClientDependency = Annotated[HttpClient, Depends(get_client)]
 
 URL = f"{settings.registry_url}/groups"
 
-
-@groups.post("/groups")
-async def create_group(
-    client: ClientDependency,
-    group: GroupCreate
-) -> GroupRead:
-    return await client.send(URL, group)
 
 @groups.get("/groups")
 async def get_groups_list(client: ClientDependency) -> list[GroupRead]:
