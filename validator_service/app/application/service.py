@@ -31,15 +31,17 @@ class ValidationService:
     
     async def is_access_forbidden_for_user(self, user_id: int, access_ids: list[int]) -> bool:
         user_group = await self.user_mgr.get_info(user_id, "group")
-        for access in access_ids:
-            if access in user_group.forbidden_accesses:
-                return True
+        if user_group is not None:
+            for access in access_ids:
+                if access in user_group.forbidden_accesses:
+                    return True
         return False
     
     async def is_user_access(self, user_id: int, access_ids: list[int]) -> bool:
         user_accesses = await self.user_mgr.get_info(user_id, "accesses")
+        user_accesses_ids = {access.id for access in user_accesses}
         for access in access_ids:
-            if access not in user_accesses:
+            if access not in user_accesses_ids:
                 return False
         return True
     

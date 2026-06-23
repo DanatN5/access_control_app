@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from typing import Annotated
-from app.schemas import RequestCreate
+from app.schemas.request_schemas import RequestCreate
 from app.dependencies import get_broker, get_client, get_publish_service
 from app.client import HttpClient
 from app.messaging.broker import Broker

@@ -9,7 +9,7 @@ class BrokerConfig(BaseSettings):
 class Settings(BaseSettings):
 
     broker: BrokerConfig = BrokerConfig()
-    request_url: str
+    registry_url: str
 
     DEBUG: bool = True
 

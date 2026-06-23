@@ -3,6 +3,7 @@ from faststream.rabbit import RabbitBroker
 from app.messaging.schemas import Request
 from app.application.service import ValidationService
 from app.application.request_handler import RequestHandler
+from app.infrastructure.client import HttpxClient
 from app.config import settings
 
 
@@ -17,8 +18,9 @@ async def proccess_request(
     request: Request
 ) -> None:
     async with httpx.AsyncClient() as client:
-        validator = ValidationService(client)
-        handler = RequestHandler(client, validator)
+        httpx_client = HttpxClient(client)
+        validator = ValidationService(httpx_client)
+        handler = RequestHandler(httpx_client, validator)
         
         await handler.handle(request)
 

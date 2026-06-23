@@ -14,7 +14,7 @@ class RegistryManager:
     async def exists(self, id: int) -> bool:
         try:
             response = await self.client.get(
-                f"{self.url}/v1/{self.resource}/{id}"
+                f"{self.url}/{self.resource}/{id}"
             )
 
             return True
@@ -28,43 +28,38 @@ class UserManager(RegistryManager):
     resource = "users"
 
     async def get_info(self, user_id: int, info: str) -> list:
-        try:
-            response = await self.client.get(
-                f"{self.url}/{self.resource}/{user_id}/{info}"
-            )
-            print(response.status_code)
-            print(response.text)
-            if info == "group":
-                return GroupInfo.model_validate(response.json())
-            if info == "accesses":
-                return [AccessInfo.model_validate(access) for access in response.json()]
 
-        except Exception:
-            print(Exception)
+        response = await self.client.get(
+            f"{self.url}/{self.resource}/{user_id}/{info}"
+        )
 
+        if info == "group":
+            return GroupInfo.model_validate(response)
+        if info == "accesses":
+            return [AccessInfo.model_validate(access) for access in response]
+
+ 
 
 class AccessManager(RegistryManager):
 
     resource = "accesses"
 
     async def exists(self, ids: list[int]):
-        try:
-            errors = []
-            response = await self.client.get(
-                f"{self.url}/{self.resource}"
-            )
-            existing_accesses = [
-                AccessInfo.model_validate(access).id for access in response.json()
-                ]
-            
-            for id in ids:
-                if id not in existing_accesses:
-                    errors.append(id)
-                
-            return errors
+
+        errors = []
+        response = await self.client.get(
+            f"{self.url}/{self.resource}"
+        )
+        existing_accesses = [
+            AccessInfo.model_validate(access).id for access in response
+            ]
         
-        except Exception:
-            pass
+        for id in ids:
+            if id not in existing_accesses:
+                errors.append(id)
+            
+        return errors
+
 
 
 class GroupManager(RegistryManager):
